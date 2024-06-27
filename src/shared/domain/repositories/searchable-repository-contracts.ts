@@ -29,31 +29,65 @@ export class SearchParams {
     return this._page
   }
 
-  private set page(value: number) {}
+  private set page(value: number) {
+    let _page = +value
+    if (
+      Number.isNaN(this._page) ||
+      _page <= 0 ||
+      parseInt(_page as any) != _page
+    ) {
+      _page = 1
+    }
+    this._page = _page
+  }
 
   get perPage() {
     return this._perPage
   }
 
-  private setPerPage(value: number) {}
+  private setPerPage(value: number) {
+    let _perPage = +value
+    if (
+      Number.isNaN(this._perPage) ||
+      _perPage <= 0 ||
+      parseInt(_perPage as any) != _perPage
+    ) {
+      _perPage = this._perPage
+    }
+    _perPage = _perPage
+  }
 
   get sort() {
     return this._sort
   }
 
-  private setSort(value: string | null) {}
+  private setSort(value: string | null) {
+    this._sort =
+      value == null || value == undefined || value == '' ? null : `${value}`
+  }
 
   get sortDir() {
     return this._sortDir
   }
 
-  private setSortDir(value: string | null) {}
+  private setSortDir(value: string | null) {
+    if (!this.sort) {
+      this._sortDir = null
+      return
+    }
+
+    const dir = `${value.toLowerCase()}`
+    this._sortDir = dir != 'asc' && dir != 'desc' ? 'desc' : dir
+  }
 
   get filter() {
     return this._filter
   }
 
-  private setFilter(value: string | null) {}
+  private setFilter(value: string | null) {
+    this._filter =
+      value == null || value == undefined || value == '' ? null : `${value}`
+  }
 }
 
 export interface SearchbleRepositoryInterface<
