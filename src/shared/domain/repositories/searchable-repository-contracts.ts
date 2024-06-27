@@ -17,12 +17,13 @@ export class SearchParams {
   protected _sort: string | null
   protected _sortDir: SortDirection | null
   protected _filter: string | null
+
   constructor(props: SearchProps) {
-    this._page = props.page
-    this._perPage = props.perPage
-    this._sort = props.sort
-    this._sortDir = props.sortDir
-    this._filter = props.filter
+    this.page = props.page
+    this.perPage = props.perPage
+    this.sort = props.sort
+    this.sortDir = props.sortDir
+    this.filter = props.filter
   }
 
   get page() {
@@ -45,7 +46,7 @@ export class SearchParams {
     return this._perPage
   }
 
-  private setPerPage(value: number) {
+  private set perPage(value: number) {
     let _perPage = +value
     if (
       Number.isNaN(this._perPage) ||
@@ -54,14 +55,14 @@ export class SearchParams {
     ) {
       _perPage = this._perPage
     }
-    _perPage = _perPage
+    this._perPage = _perPage
   }
 
   get sort() {
     return this._sort
   }
 
-  private setSort(value: string | null) {
+  private set sort(value: string | null) {
     this._sort =
       value == null || value == undefined || value == '' ? null : `${value}`
   }
@@ -70,7 +71,7 @@ export class SearchParams {
     return this._sortDir
   }
 
-  private setSortDir(value: string | null) {
+  private set sortDir(value: string | null) {
     if (!this.sort) {
       this._sortDir = null
       return
@@ -84,7 +85,7 @@ export class SearchParams {
     return this._filter
   }
 
-  private setFilter(value: string | null) {
+  private set filter(value: string | null) {
     this._filter =
       value == null || value == undefined || value == '' ? null : `${value}`
   }
