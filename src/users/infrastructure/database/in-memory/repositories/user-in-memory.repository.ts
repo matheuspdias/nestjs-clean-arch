@@ -9,14 +9,14 @@ export class UserInMemoryRepository
   implements UserRepository
 {
   async findByEmail(email: string): Promise<UserEntity> {
-    const entity = this.items.find(item => item.email == email)
+    const entity = this.items.find(item => item.email === email)
     if (!entity) {
       throw new NotFoundError(`Entity not found using email ${email}`)
     }
     return entity
   }
   async emailExists(email: string): Promise<void> {
-    const entity = this.items.find(item => item.email == email)
+    const entity = this.items.find(item => item.email === email)
     if (entity) {
       throw new ConflictError('Email address already used')
     }
