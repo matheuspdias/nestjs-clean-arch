@@ -64,5 +64,9 @@ export abstract class InMemorySearchRepository<E extends Entity>
     items: E[],
     page: SearchParams['page'] | null,
     perPage: SearchParams['perPage'] | null,
-  ): Promise<E[]> {}
+  ): Promise<E[]> {
+    const start = (page - 1) * perPage
+    const limit = start + perPage
+    return items.slice(start, limit)
+  }
 }
