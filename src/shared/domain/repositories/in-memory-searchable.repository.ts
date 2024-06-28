@@ -1,14 +1,14 @@
 import { Entity } from '../entities/entity'
 import { InMemoryRepository } from './in-memory.repository'
 import {
-  SearchbleRepositoryInterface,
+  SearchableRepositoryInterface,
   SearchParams,
   SearchResult,
 } from './searchable-repository-contracts'
 
-export abstract class InMemorySearchRepository<E extends Entity>
+export abstract class InMemorySearchableRepository<E extends Entity>
   extends InMemoryRepository<E>
-  implements SearchbleRepositoryInterface<E, any, any>
+  implements SearchableRepositoryInterface<E, any, any>
 {
   sortableFields: string[] = []
 
