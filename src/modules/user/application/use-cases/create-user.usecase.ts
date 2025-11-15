@@ -5,6 +5,7 @@ import { User } from '../../domain/entities/user.entity';
 import { USER_REPOSITORY } from '../../domain/repositories/user.repository';
 import type { IUserRepository } from '../../domain/repositories/user.repository';
 import { Email } from '../../domain/value-objects/email.vo';
+import { Password } from '../../domain/value-objects/password.vo';
 import { CreateUserDto } from '../dto/request/create-user.dto';
 import { UserResponseDto } from '../dto/response/user-response.dto';
 
@@ -29,11 +30,14 @@ export class CreateUserUseCase extends BaseUseCase<
       throw new DomainException('Email already in use');
     }
 
+    // Hash password using Password value object
+    const password = await Password.create(request.password);
+
     // Create user entity
     const user = User.create({
       name: request.name,
       email,
-      password: request.password, // In production, hash the password here
+      password,
     });
 
     // Save to repository

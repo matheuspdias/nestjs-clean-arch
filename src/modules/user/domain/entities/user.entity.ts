@@ -1,13 +1,14 @@
 import { BaseEntity } from '../../../../shared/base/base.entity';
 import { DomainException } from '../../../../shared/exceptions/domain.exception';
 import { Email } from '../value-objects/email.vo';
+import { Password } from '../value-objects/password.vo';
 import { UserId } from '../value-objects/user-id.vo';
 
 export interface UserProps {
   id?: UserId;
   name: string;
   email: Email;
-  password: string;
+  password: Password;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -15,7 +16,7 @@ export interface UserProps {
 export class User extends BaseEntity {
   private _name: string;
   private _email: Email;
-  private _password: string;
+  private _password: Password;
 
   private constructor(props: UserProps) {
     super(
@@ -50,8 +51,8 @@ export class User extends BaseEntity {
       throw new DomainException('Name must not exceed 100 characters');
     }
 
-    if (!this._password || this._password.length < 6) {
-      throw new DomainException('Password must have at least 6 characters');
+    if (!this._password) {
+      throw new DomainException('Password cannot be empty');
     }
   }
 
@@ -63,7 +64,7 @@ export class User extends BaseEntity {
     return this._email;
   }
 
-  get password(): string {
+  get password(): Password {
     return this._password;
   }
 
@@ -78,9 +79,9 @@ export class User extends BaseEntity {
     this.touch();
   }
 
-  updatePassword(password: string): void {
-    if (!password || password.length < 6) {
-      throw new DomainException('Password must have at least 6 characters');
+  updatePassword(password: Password): void {
+    if (!password) {
+      throw new DomainException('Password cannot be empty');
     }
     this._password = password;
     this.touch();

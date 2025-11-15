@@ -1,9 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseUseCase } from '../../../../shared/base/base.usecase';
-import { DomainException, EntityNotFoundException } from '../../../../shared/exceptions/domain.exception';
+import {
+  DomainException,
+  EntityNotFoundException,
+} from '../../../../shared/exceptions/domain.exception';
 import { USER_REPOSITORY } from '../../domain/repositories/user.repository';
 import type { IUserRepository } from '../../domain/repositories/user.repository';
 import { Email } from '../../domain/value-objects/email.vo';
+import { Password } from '../../domain/value-objects/password.vo';
 import { UpdateUserDto } from '../dto/request/update-user.dto';
 import { UserResponseDto } from '../dto/response/user-response.dto';
 
@@ -13,7 +17,10 @@ export interface UpdateUserRequest {
 }
 
 @Injectable()
-export class UpdateUserUseCase extends BaseUseCase<UpdateUserRequest, UserResponseDto> {
+export class UpdateUserUseCase extends BaseUseCase<
+  UpdateUserRequest,
+  UserResponseDto
+> {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
@@ -49,7 +56,8 @@ export class UpdateUserUseCase extends BaseUseCase<UpdateUserRequest, UserRespon
 
     // Update password if provided
     if (request.data.password) {
-      user.updatePassword(request.data.password); // In production, hash the password
+      const newPassword = await Password.create(request.data.password);
+      user.updatePassword(newPassword);
     }
 
     const updatedUser = await this.userRepository.update(user);

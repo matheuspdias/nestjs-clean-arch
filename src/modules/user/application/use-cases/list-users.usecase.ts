@@ -2,7 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { BaseUseCase } from '../../../../shared/base/base.usecase';
 import { USER_REPOSITORY } from '../../domain/repositories/user.repository';
 import type { IUserRepository } from '../../domain/repositories/user.repository';
-import { PaginatedUserResponseDto, UserResponseDto } from '../dto/response/user-response.dto';
+import {
+  PaginatedUserResponseDto,
+  UserResponseDto,
+} from '../dto/response/user-response.dto';
 
 export interface ListUsersRequest {
   page?: number;
@@ -28,7 +31,9 @@ export class ListUsersUseCase extends BaseUseCase<
     const { users, total } = await this.userRepository.findAll(page, limit);
 
     const response = new PaginatedUserResponseDto();
-    response.users = users.map((user) => UserResponseDto.fromDomain(user.toObject()));
+    response.users = users.map((user) =>
+      UserResponseDto.fromDomain(user.toObject()),
+    );
     response.total = total;
     response.page = page;
     response.limit = limit;

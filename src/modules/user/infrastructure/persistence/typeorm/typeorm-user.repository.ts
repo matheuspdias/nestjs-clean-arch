@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from '../../../domain/entities/user.entity';
 import { IUserRepository } from '../../../domain/repositories/user.repository';
 import { Email } from '../../../domain/value-objects/email.vo';
+import { Password } from '../../../domain/value-objects/password.vo';
 import { UserId } from '../../../domain/value-objects/user-id.vo';
 import { TypeOrmUserModel } from './typeorm-user.model';
 
@@ -68,7 +69,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       id: UserId.create(model.id),
       name: model.name,
       email: Email.create(model.email),
-      password: model.password,
+      password: Password.fromHash(model.password), // Load from hash
       createdAt: model.createdAt,
       updatedAt: model.updatedAt,
     });
@@ -79,7 +80,7 @@ export class TypeOrmUserRepository implements IUserRepository {
     model.id = user.id;
     model.name = user.name;
     model.email = user.email.getValue();
-    model.password = user.password;
+    model.password = user.password.getValue(); // Save hash to database
     model.createdAt = user.createdAt;
     model.updatedAt = user.updatedAt;
     return model;

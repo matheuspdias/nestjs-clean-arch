@@ -283,21 +283,6 @@ DB_ROOT_PASSWORD=root
 NGINX_PORT=80
 ```
 
-## Melhorias Futuras
-
-- [ ] Hash de senhas com bcrypt
-- [ ] Autenticação JWT
-- [ ] Refresh tokens
-- [ ] Eventos de domínio
-- [ ] Cache com Redis
-- [ ] Logs estruturados
-- [ ] Testes unitários e E2E completos
-- [ ] CI/CD pipeline
-- [ ] Rate limiting
-- [ ] API versioning
-- [ ] Health checks
-- [ ] Métricas e monitoramento
-
 ## Contribuindo
 
 Contribuições são bem-vindas! Por favor:
