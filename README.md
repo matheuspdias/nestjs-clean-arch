@@ -1,98 +1,375 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# NestJS Clean Architecture - User CRUD
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Um projeto completo de CRUD de usuários implementado com **NestJS**, seguindo rigorosamente os princípios de **Clean Architecture** e **Domain-Driven Design (DDD)**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Características
 
-## Description
+- Clean Architecture com separação clara de camadas
+- Domain-Driven Design (DDD) com Entidades e Value Objects
+- SOLID principles aplicados
+- TypeORM com MySQL 8
+- Validação robusta com class-validator
+- Documentação automática com Swagger
+- Docker com nginx, MySQL e Node.js
+- Dados persistentes em volumes Docker
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Stack Tecnológica
 
-## Project setup
+- **NestJS** - Framework Node.js progressivo
+- **TypeORM** - ORM para TypeScript e JavaScript
+- **MySQL 8** - Sistema de gerenciamento de banco de dados
+- **Swagger** - Documentação interativa da API
+- **Docker & Docker Compose** - Containerização
+- **Nginx** - Reverse proxy e servidor web
+- **class-validator** - Validação declarativa de DTOs
+- **class-transformer** - Transformação de objetos
 
-```bash
-$ npm install
-```
+## Início Rápido
 
-## Compile and run the project
+### Com Docker (Recomendado)
 
 ```bash
-# development
-$ npm run start
+# 1. Clonar o repositório
+git clone <repo-url>
+cd nestjs-clean-arch
 
-# watch mode
-$ npm run start:dev
+# 2. Configurar variáveis de ambiente
+cp .env.example .env
 
-# production mode
-$ npm run start:prod
+# 3. Iniciar todos os serviços com build
+docker-compose up -d --build
+
+# 4. Acessar a aplicação
+# API: http://localhost/api
+# Swagger: http://localhost/api/docs
 ```
 
-## Run tests
+**Nota:** O parâmetro `--build` garante que a aplicação será compilada com o código mais recente.
+
+### Desenvolvimento Local
 
 ```bash
-# unit tests
-$ npm run test
+# Instalar dependências
+npm install
 
-# e2e tests
-$ npm run test:e2e
+# Configurar .env
+cp .env.example .env
 
-# test coverage
-$ npm run test:cov
+# Iniciar MySQL via Docker
+docker-compose up -d mysql
+
+# Executar em modo desenvolvimento
+npm run start:dev
+
+# A aplicação estará disponível em:
+# API: http://localhost:3000/api
+# Swagger: http://localhost:3000/api/docs
 ```
 
-## Deployment
+## Estrutura do Projeto
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+```
+src/
+├── modules/
+│   └── user/                          # Módulo de Usuário
+│       ├── domain/                    # Camada de Domínio
+│       │   ├── entities/              # Entidades de negócio
+│       │   ├── value-objects/         # Value Objects (Email, UserId)
+│       │   ├── repositories/          # Interfaces de repositórios
+│       │   └── services/              # Serviços de domínio
+│       │
+│       ├── application/               # Casos de Uso
+│       │   ├── dto/                   # Data Transfer Objects
+│       │   │   ├── request/           # DTOs de entrada
+│       │   │   └── response/          # DTOs de saída
+│       │   └── use-cases/             # Lógica de aplicação
+│       │
+│       ├── infrastructure/            # Infraestrutura
+│       │   ├── persistence/           # TypeORM models e repositories
+│       │   └── providers/             # Provedores de DI
+│       │
+│       └── presentation/              # Camada de Apresentação
+│           └── controllers/           # Controllers REST
+│
+└── shared/                            # Código compartilhado
+    ├── base/                          # Classes base
+    ├── exceptions/                    # Exceções customizadas
+    └── utils/                         # Utilitários
+```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## API Endpoints
+
+### Base URL
+- **Docker**: `http://localhost/api`
+- **Local**: `http://localhost:3000/api`
+
+### Documentação Swagger
+- **Docker**: `http://localhost/api/docs`
+- **Local**: `http://localhost:3000/api/docs`
+
+### Endpoints Disponíveis
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | `/api/users` | Criar novo usuário |
+| GET | `/api/users` | Listar usuários (paginado) |
+| GET | `/api/users/:id` | Buscar usuário por ID |
+| PUT | `/api/users/:id` | Atualizar usuário |
+| DELETE | `/api/users/:id` | Deletar usuário |
+
+### Exemplos de Uso
+
+#### Criar Usuário
+```bash
+curl -X POST http://localhost/api/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "secret123"
+  }'
+```
+
+#### Listar Usuários
+```bash
+curl http://localhost/api/users?page=1&limit=10
+```
+
+#### Buscar Usuário
+```bash
+curl http://localhost/api/users/{id}
+```
+
+#### Atualizar Usuário
+```bash
+curl -X PUT http://localhost/api/users/{id} \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Updated",
+    "email": "john.updated@example.com"
+  }'
+```
+
+#### Deletar Usuário
+```bash
+curl -X DELETE http://localhost/api/users/{id}
+```
+
+## Validações
+
+### Email
+- Formato válido de e-mail
+- Máximo 255 caracteres
+- Único no sistema
+- Convertido para lowercase
+
+### Nome
+- Mínimo 3 caracteres
+- Máximo 100 caracteres
+- Não pode estar vazio
+
+### Senha
+- Mínimo 6 caracteres
+
+## Database Migrations
+
+Por padrão, o projeto usa `synchronize: true` no TypeORM, que cria/atualiza automaticamente as tabelas em desenvolvimento. **Em produção, use migrations**.
+
+### Configuração Atual
+
+O projeto está configurado com **auto-sincronização** para facilitar o desenvolvimento:
+- As tabelas são criadas automaticamente ao iniciar
+- Mudanças no schema são aplicadas automaticamente
+- **ATENÇÃO**: Desabilite em produção (`synchronize: false`)
+
+### Usando Migrations (Recomendado para Produção)
+
+#### 1. Desabilitar Auto-Sync
+
+Edite [src/app.module.ts](src/app.module.ts):
+```typescript
+TypeOrmModule.forRoot({
+  // ...
+  synchronize: false, // Mude para false
+  // ...
+})
+```
+
+#### 2. Adicionar Scripts de Migration
+
+Adicione ao [package.json](package.json):
+```json
+"scripts": {
+  "typeorm": "typeorm-ts-node-commonjs",
+  "migration:generate": "npm run typeorm -- migration:generate -d ormconfig.json",
+  "migration:create": "npm run typeorm -- migration:create",
+  "migration:run": "npm run typeorm -- migration:run -d ormconfig.json",
+  "migration:revert": "npm run typeorm -- migration:revert -d ormconfig.json",
+  "migration:show": "npm run typeorm -- migration:show -d ormconfig.json"
+}
+```
+
+#### 3. Comandos de Migration
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Gerar migration automaticamente (baseado nas mudanças das entities)
+npm run migration:generate -- src/migrations/CreateUsersTable
+
+# Criar migration vazia (manual)
+npm run migration:create -- src/migrations/AddUserRoles
+
+# Executar migrations pendentes
+npm run migration:run
+
+# Reverter última migration
+npm run migration:revert
+
+# Ver status das migrations
+npm run migration:show
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+#### 4. Executar Migrations no Docker
 
-## Resources
+```bash
+# Entrar no container
+docker exec -it nestjs-app sh
 
-Check out a few resources that may come in handy when working with NestJS:
+# Executar migrations
+npm run migration:run
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# Sair
+exit
+```
 
-## Support
+### Migration Incluída
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+O projeto já inclui uma migration de exemplo em [src/migrations/1700000000000-CreateUsersTable.ts](src/migrations/1700000000000-CreateUsersTable.ts) que cria:
+- Tabela `users` com todos os campos
+- Índice único em `email`
+- Campos de timestamp automáticos
 
-## Stay in touch
+## Scripts Disponíveis
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+# Desenvolvimento
+npm run start:dev          # Inicia em modo watch
 
-## License
+# Produção
+npm run build              # Compila o projeto
+npm run start:prod         # Inicia em produção
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Testes
+npm run test               # Testes unitários
+npm run test:e2e           # Testes E2E
+npm run test:cov           # Cobertura de testes
+
+# Linting
+npm run lint               # Verifica código
+npm run format             # Formata código
+```
+
+## Docker
+
+### Comandos Úteis
+
+```bash
+# Iniciar todos os serviços (primeira vez ou após mudanças)
+docker-compose up -d --build
+
+# Ver logs em tempo real
+docker-compose logs -f
+docker-compose logs -f app         # Apenas logs da aplicação
+docker-compose logs -f mysql       # Apenas logs do MySQL
+
+# Rebuild apenas da aplicação (após mudanças no código)
+docker-compose up -d --build app
+
+# Parar os serviços (mantém dados)
+docker-compose down
+
+# Parar e remover volumes (APAGA o banco de dados!)
+docker-compose down -v
+
+# Reiniciar um serviço específico
+docker-compose restart app
+docker-compose restart mysql
+
+# Verificar status dos serviços
+docker-compose ps
+
+# Acessar shell do container da aplicação
+docker exec -it nestjs-app sh
+```
+
+### Serviços
+
+- **nginx** - Porta 80 (http://localhost)
+- **app** - NestJS (porta 3000 interna)
+- **mysql** - Porta 3306
+
+## Arquitetura
+
+Este projeto segue os princípios de **Clean Architecture** e **DDD**. Para informações detalhadas sobre a arquitetura, decisões de design e padrões utilizados, consulte [ARCHITECTURE.md](ARCHITECTURE.md).
+
+### Princípios Aplicados
+
+- **Clean Architecture**: Separação de camadas com dependências unidirecionais
+- **DDD**: Entidades ricas, Value Objects, Aggregates e Repository Pattern
+- **SOLID**: Código coeso e de baixo acoplamento
+- **Dependency Inversion**: Uso de interfaces e injeção de dependência
+
+## Variáveis de Ambiente
+
+```env
+# Application
+NODE_ENV=production
+PORT=3000
+
+# Database
+DB_HOST=mysql
+DB_PORT=3306
+DB_USERNAME=nestjs
+DB_PASSWORD=secret
+DB_DATABASE=nestjs_clean_arch
+DB_ROOT_PASSWORD=root
+
+# Nginx
+NGINX_PORT=80
+```
+
+## Melhorias Futuras
+
+- [ ] Hash de senhas com bcrypt
+- [ ] Autenticação JWT
+- [ ] Refresh tokens
+- [ ] Eventos de domínio
+- [ ] Cache com Redis
+- [ ] Logs estruturados
+- [ ] Testes unitários e E2E completos
+- [ ] CI/CD pipeline
+- [ ] Rate limiting
+- [ ] API versioning
+- [ ] Health checks
+- [ ] Métricas e monitoramento
+
+## Contribuindo
+
+Contribuições são bem-vindas! Por favor:
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## Contato
+
+Para dúvidas ou sugestões, abra uma issue no repositório.
+
+---
+
+**Desenvolvido com NestJS** 🚀
