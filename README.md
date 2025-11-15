@@ -34,7 +34,7 @@ Para desenvolvimento com **hot reload automático** quando você edita o código
 
 ```bash
 # 1. Clonar o repositório
-git clone <repo-url>
+git clone [<repo-url>](https://github.com/matheuspdias/nestjs-clean-arch.git)
 cd nestjs-clean-arch
 
 # 2. Configurar variáveis de ambiente
@@ -120,26 +120,29 @@ src/
 ## API Endpoints
 
 ### Base URL
+
 - **Docker**: `http://localhost/api`
 - **Local**: `http://localhost:3000/api`
 
 ### Documentação Swagger
+
 - **Docker**: `http://localhost/api/docs`
 - **Local**: `http://localhost:3000/api/docs`
 
 ### Endpoints Disponíveis
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/api/users` | Criar novo usuário |
-| GET | `/api/users` | Listar usuários (paginado) |
-| GET | `/api/users/:id` | Buscar usuário por ID |
-| PUT | `/api/users/:id` | Atualizar usuário |
-| DELETE | `/api/users/:id` | Deletar usuário |
+| Método | Endpoint         | Descrição                  |
+| ------ | ---------------- | -------------------------- |
+| POST   | `/api/users`     | Criar novo usuário         |
+| GET    | `/api/users`     | Listar usuários (paginado) |
+| GET    | `/api/users/:id` | Buscar usuário por ID      |
+| PUT    | `/api/users/:id` | Atualizar usuário          |
+| DELETE | `/api/users/:id` | Deletar usuário            |
 
 ### Exemplos de Uso
 
 #### Criar Usuário
+
 ```bash
 curl -X POST http://localhost/api/users \
   -H "Content-Type: application/json" \
@@ -151,16 +154,19 @@ curl -X POST http://localhost/api/users \
 ```
 
 #### Listar Usuários
+
 ```bash
 curl http://localhost/api/users?page=1&limit=10
 ```
 
 #### Buscar Usuário
+
 ```bash
 curl http://localhost/api/users/{id}
 ```
 
 #### Atualizar Usuário
+
 ```bash
 curl -X PUT http://localhost/api/users/{id} \
   -H "Content-Type: application/json" \
@@ -171,6 +177,7 @@ curl -X PUT http://localhost/api/users/{id} \
 ```
 
 #### Deletar Usuário
+
 ```bash
 curl -X DELETE http://localhost/api/users/{id}
 ```
@@ -178,17 +185,20 @@ curl -X DELETE http://localhost/api/users/{id}
 ## Validações
 
 ### Email
+
 - Formato válido de e-mail
 - Máximo 255 caracteres
 - Único no sistema
 - Convertido para lowercase
 
 ### Nome
+
 - Mínimo 3 caracteres
 - Máximo 100 caracteres
 - Não pode estar vazio
 
 ### Senha
+
 - Mínimo 6 caracteres
 
 ## Database Migrations
@@ -198,6 +208,7 @@ Por padrão, o projeto usa `synchronize: true` no TypeORM, que cria/atualiza aut
 ### Configuração Atual
 
 O projeto está configurado com **auto-sincronização** para facilitar o desenvolvimento:
+
 - As tabelas são criadas automaticamente ao iniciar
 - Mudanças no schema são aplicadas automaticamente
 - **ATENÇÃO**: Desabilite em produção (`synchronize: false`)
@@ -207,17 +218,19 @@ O projeto está configurado com **auto-sincronização** para facilitar o desenv
 #### 1. Desabilitar Auto-Sync
 
 Edite [src/app.module.ts](src/app.module.ts):
+
 ```typescript
 TypeOrmModule.forRoot({
   // ...
   synchronize: false, // Mude para false
   // ...
-})
+});
 ```
 
 #### 2. Adicionar Scripts de Migration
 
 Adicione ao [package.json](package.json):
+
 ```json
 "scripts": {
   "typeorm": "typeorm-ts-node-commonjs",
@@ -264,6 +277,7 @@ exit
 ### Migration Incluída
 
 O projeto já inclui uma migration de exemplo em [src/migrations/1700000000000-CreateUsersTable.ts](src/migrations/1700000000000-CreateUsersTable.ts) que cria:
+
 - Tabela `users` com todos os campos
 - Índice único em `email`
 - Campos de timestamp automáticos
