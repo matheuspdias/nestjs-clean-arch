@@ -26,22 +26,20 @@ Um projeto completo de CRUD de usuários implementado com **NestJS**, seguindo r
 
 ## Início Rápido
 
-### Com Docker
+### Com Docker (Recomendado) ⚡
 
-#### Desenvolvimento (com Hot Reload) ⚡
-
-Para desenvolvimento com **hot reload automático** quando você edita o código:
+Este projeto está configurado para desenvolvimento com **hot reload automático** - mudanças no código são refletidas instantaneamente!
 
 ```bash
 # 1. Clonar o repositório
-git clone [<repo-url>](https://github.com/matheuspdias/nestjs-clean-arch.git)
+git clone https://github.com/matheuspdias/nestjs-clean-arch.git
 cd nestjs-clean-arch
 
 # 2. Configurar variáveis de ambiente
 cp .env.example .env
 
-# 3. Iniciar em modo desenvolvimento
-docker-compose -f docker-compose.dev.yml up -d --build
+# 3. Iniciar os containers
+docker-compose up -d --build
 
 # 4. Acessar a aplicação
 # API: http://localhost/api
@@ -49,22 +47,6 @@ docker-compose -f docker-compose.dev.yml up -d --build
 ```
 
 **Mudanças no código são refletidas automaticamente!** Não precisa reiniciar o container.
-
-#### Produção
-
-Para produção (build otimizado):
-
-```bash
-# Configurar variáveis de ambiente
-cp .env.example .env
-
-# Iniciar em modo produção
-docker-compose up -d --build
-
-# Acessar a aplicação
-# API: http://localhost/api
-# Swagger: http://localhost/api/docs
-```
 
 ### Desenvolvimento Local
 
@@ -201,86 +183,15 @@ curl -X DELETE http://localhost/api/users/{id}
 
 - Mínimo 6 caracteres
 
-## Database Migrations
+## Database
 
-Por padrão, o projeto usa `synchronize: true` no TypeORM, que cria/atualiza automaticamente as tabelas em desenvolvimento. **Em produção, use migrations**.
+### Auto-Sincronização (Padrão)
 
-### Configuração Atual
+O projeto usa `synchronize: true` no TypeORM, que cria/atualiza automaticamente as tabelas ao iniciar:
 
-O projeto está configurado com **auto-sincronização** para facilitar o desenvolvimento:
-
-- As tabelas são criadas automaticamente ao iniciar
+- As tabelas são criadas automaticamente
 - Mudanças no schema são aplicadas automaticamente
-- **ATENÇÃO**: Desabilite em produção (`synchronize: false`)
-
-### Usando Migrations (Recomendado para Produção)
-
-#### 1. Desabilitar Auto-Sync
-
-Edite [src/app.module.ts](src/app.module.ts):
-
-```typescript
-TypeOrmModule.forRoot({
-  // ...
-  synchronize: false, // Mude para false
-  // ...
-});
-```
-
-#### 2. Adicionar Scripts de Migration
-
-Adicione ao [package.json](package.json):
-
-```json
-"scripts": {
-  "typeorm": "typeorm-ts-node-commonjs",
-  "migration:generate": "npm run typeorm -- migration:generate -d ormconfig.json",
-  "migration:create": "npm run typeorm -- migration:create",
-  "migration:run": "npm run typeorm -- migration:run -d ormconfig.json",
-  "migration:revert": "npm run typeorm -- migration:revert -d ormconfig.json",
-  "migration:show": "npm run typeorm -- migration:show -d ormconfig.json"
-}
-```
-
-#### 3. Comandos de Migration
-
-```bash
-# Gerar migration automaticamente (baseado nas mudanças das entities)
-npm run migration:generate -- src/migrations/CreateUsersTable
-
-# Criar migration vazia (manual)
-npm run migration:create -- src/migrations/AddUserRoles
-
-# Executar migrations pendentes
-npm run migration:run
-
-# Reverter última migration
-npm run migration:revert
-
-# Ver status das migrations
-npm run migration:show
-```
-
-#### 4. Executar Migrations no Docker
-
-```bash
-# Entrar no container
-docker exec -it nestjs-app sh
-
-# Executar migrations
-npm run migration:run
-
-# Sair
-exit
-```
-
-### Migration Incluída
-
-O projeto já inclui uma migration de exemplo em [src/migrations/1700000000000-CreateUsersTable.ts](src/migrations/1700000000000-CreateUsersTable.ts) que cria:
-
-- Tabela `users` com todos os campos
-- Índice único em `email`
-- Campos de timestamp automáticos
+- Perfeito para desenvolvimento e testes de DDD/Clean Arch
 
 ## Scripts Disponíveis
 
@@ -306,51 +217,28 @@ npm run format             # Formata código
 
 ### Comandos Úteis
 
-#### Modo Desenvolvimento (Hot Reload)
-
 ```bash
-# Iniciar em modo desenvolvimento
-docker-compose -f docker-compose.dev.yml up -d --build
-
-# Ver logs em tempo real
-docker-compose -f docker-compose.dev.yml logs -f
-docker-compose -f docker-compose.dev.yml logs -f app
-
-# Parar os serviços (mantém dados)
-docker-compose -f docker-compose.dev.yml down
-
-# Parar e remover volumes (APAGA o banco de dados!)
-docker-compose -f docker-compose.dev.yml down -v
-
-# Reiniciar apenas a aplicação
-docker-compose -f docker-compose.dev.yml restart app
-
-# Acessar shell do container
-docker exec -it nestjs-app sh
-```
-
-#### Modo Produção
-
-```bash
-# Iniciar em modo produção
+# Iniciar os containers
 docker-compose up -d --build
 
-# Ver logs
+# Ver logs em tempo real
 docker-compose logs -f
 docker-compose logs -f app
 
-# Parar os serviços
+# Parar os serviços (mantém dados)
 docker-compose down
 
-# Rebuild após mudanças no código
-docker-compose up -d --build app
-```
+# Parar e remover volumes (APAGA o banco de dados!)
+docker-compose down -v
 
-#### Comandos Gerais
+# Reiniciar apenas a aplicação
+docker-compose restart app
 
-```bash
 # Verificar status dos serviços
 docker-compose ps
+
+# Acessar shell do container
+docker exec -it nestjs-app sh
 
 # Ver uso de recursos
 docker stats
@@ -380,7 +268,7 @@ Este projeto segue os princípios de **Clean Architecture** e **DDD**. Para info
 
 ```env
 # Application
-NODE_ENV=production
+NODE_ENV=development
 PORT=3000
 
 # Database
