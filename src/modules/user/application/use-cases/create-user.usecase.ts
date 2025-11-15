@@ -9,7 +9,10 @@ import { CreateUserDto } from '../dto/request/create-user.dto';
 import { UserResponseDto } from '../dto/response/user-response.dto';
 
 @Injectable()
-export class CreateUserUseCase extends BaseUseCase<CreateUserDto, UserResponseDto> {
+export class CreateUserUseCase extends BaseUseCase<
+  CreateUserDto,
+  UserResponseDto
+> {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,

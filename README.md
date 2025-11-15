@@ -26,7 +26,11 @@ Um projeto completo de CRUD de usuários implementado com **NestJS**, seguindo r
 
 ## Início Rápido
 
-### Com Docker (Recomendado)
+### Com Docker
+
+#### Desenvolvimento (com Hot Reload) ⚡
+
+Para desenvolvimento com **hot reload automático** quando você edita o código:
 
 ```bash
 # 1. Clonar o repositório
@@ -36,15 +40,31 @@ cd nestjs-clean-arch
 # 2. Configurar variáveis de ambiente
 cp .env.example .env
 
-# 3. Iniciar todos os serviços com build
-docker-compose up -d --build
+# 3. Iniciar em modo desenvolvimento
+docker-compose -f docker-compose.dev.yml up -d --build
 
 # 4. Acessar a aplicação
 # API: http://localhost/api
 # Swagger: http://localhost/api/docs
 ```
 
-**Nota:** O parâmetro `--build` garante que a aplicação será compilada com o código mais recente.
+**Mudanças no código são refletidas automaticamente!** Não precisa reiniciar o container.
+
+#### Produção
+
+Para produção (build otimizado):
+
+```bash
+# Configurar variáveis de ambiente
+cp .env.example .env
+
+# Iniciar em modo produção
+docker-compose up -d --build
+
+# Acessar a aplicação
+# API: http://localhost/api
+# Swagger: http://localhost/api/docs
+```
 
 ### Desenvolvimento Local
 
@@ -272,33 +292,57 @@ npm run format             # Formata código
 
 ### Comandos Úteis
 
+#### Modo Desenvolvimento (Hot Reload)
+
 ```bash
-# Iniciar todos os serviços (primeira vez ou após mudanças)
-docker-compose up -d --build
+# Iniciar em modo desenvolvimento
+docker-compose -f docker-compose.dev.yml up -d --build
 
 # Ver logs em tempo real
-docker-compose logs -f
-docker-compose logs -f app         # Apenas logs da aplicação
-docker-compose logs -f mysql       # Apenas logs do MySQL
-
-# Rebuild apenas da aplicação (após mudanças no código)
-docker-compose up -d --build app
+docker-compose -f docker-compose.dev.yml logs -f
+docker-compose -f docker-compose.dev.yml logs -f app
 
 # Parar os serviços (mantém dados)
-docker-compose down
+docker-compose -f docker-compose.dev.yml down
 
 # Parar e remover volumes (APAGA o banco de dados!)
-docker-compose down -v
+docker-compose -f docker-compose.dev.yml down -v
 
-# Reiniciar um serviço específico
-docker-compose restart app
-docker-compose restart mysql
+# Reiniciar apenas a aplicação
+docker-compose -f docker-compose.dev.yml restart app
 
+# Acessar shell do container
+docker exec -it nestjs-app sh
+```
+
+#### Modo Produção
+
+```bash
+# Iniciar em modo produção
+docker-compose up -d --build
+
+# Ver logs
+docker-compose logs -f
+docker-compose logs -f app
+
+# Parar os serviços
+docker-compose down
+
+# Rebuild após mudanças no código
+docker-compose up -d --build app
+```
+
+#### Comandos Gerais
+
+```bash
 # Verificar status dos serviços
 docker-compose ps
 
-# Acessar shell do container da aplicação
-docker exec -it nestjs-app sh
+# Ver uso de recursos
+docker stats
+
+# Limpar tudo (containers, volumes, imagens)
+docker-compose down -v --rmi all
 ```
 
 ### Serviços

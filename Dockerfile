@@ -1,21 +1,3 @@
-# Stage 1: Build
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy source code
-COPY . .
-
-# Build the application
-RUN npm run build
-
-# Stage 2: Production
 FROM node:20-alpine
 
 WORKDIR /app
@@ -23,14 +5,14 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Install ALL dependencies (including dev)
+RUN npm install
 
-# Copy built application from builder stage
-COPY --from=builder /app/dist ./dist
+# Copy source code
+COPY . .
 
 # Expose application port
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "run", "start:prod"]
+# Start in development mode with hot reload
+CMD ["npm", "run", "start:dev"]
