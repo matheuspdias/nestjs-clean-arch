@@ -243,7 +243,7 @@ describe('UpdateUserUseCase', () => {
         password: 'newPassword123',
       };
 
-      let updatedUser: User;
+      let updatedUser: User | null = null;
       mockUserRepository.findById.mockResolvedValue(mockUser);
       mockUserRepository.update.mockImplementation(async (user: User) => {
         updatedUser = user;
@@ -255,8 +255,8 @@ describe('UpdateUserUseCase', () => {
         data: updateDto,
       });
 
-      expect(updatedUser.password.getValue()).not.toBe('newPassword123');
-      expect(updatedUser.password.getValue()).toMatch(/^\$2[aby]\$.{56}$/);
+      expect(updatedUser!.password.getValue()).not.toBe('newPassword123');
+      expect(updatedUser!.password.getValue()).toMatch(/^\$2[aby]\$.{56}$/);
     });
 
     it('should convert email to lowercase', async () => {

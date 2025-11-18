@@ -153,14 +153,14 @@ describe('User Entity', () => {
         User.create({
           name: 'John Doe',
           email: validEmail,
-          password: null,
+          password: null as any,
         }),
       ).toThrow(DomainException);
       expect(() =>
         User.create({
           name: 'John Doe',
           email: validEmail,
-          password: null,
+          password: null as any,
         }),
       ).toThrow('Password cannot be empty');
     });
@@ -170,14 +170,14 @@ describe('User Entity', () => {
         User.create({
           name: 'John Doe',
           email: validEmail,
-          password: undefined,
+          password: undefined as any,
         }),
       ).toThrow(DomainException);
       expect(() =>
         User.create({
           name: 'John Doe',
           email: validEmail,
-          password: undefined,
+          password: undefined as any,
         }),
       ).toThrow('Password cannot be empty');
     });
@@ -325,8 +325,8 @@ describe('User Entity', () => {
         password: validPassword,
       });
 
-      expect(() => user.updatePassword(null)).toThrow(DomainException);
-      expect(() => user.updatePassword(null)).toThrow(
+      expect(() => user.updatePassword(null as any)).toThrow(DomainException);
+      expect(() => user.updatePassword(null as any)).toThrow(
         'Password cannot be empty',
       );
     });
@@ -338,8 +338,8 @@ describe('User Entity', () => {
         password: validPassword,
       });
 
-      expect(() => user.updatePassword(undefined)).toThrow(DomainException);
-      expect(() => user.updatePassword(undefined)).toThrow(
+      expect(() => user.updatePassword(undefined as any)).toThrow(DomainException);
+      expect(() => user.updatePassword(undefined as any)).toThrow(
         'Password cannot be empty',
       );
     });
@@ -438,7 +438,7 @@ describe('User Entity', () => {
         password: validPassword,
       });
 
-      expect(user.equals(null)).toBe(false);
+      expect(user.equals(null as any)).toBe(false);
     });
 
     it('should return false when comparing with undefined', () => {
@@ -448,7 +448,7 @@ describe('User Entity', () => {
         password: validPassword,
       });
 
-      expect(user.equals(undefined)).toBe(false);
+      expect(user.equals(undefined as any)).toBe(false);
     });
 
     it('should return true when comparing user with itself', () => {
