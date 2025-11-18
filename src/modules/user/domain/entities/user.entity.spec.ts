@@ -263,11 +263,13 @@ describe('User Entity', () => {
       const originalUpdatedAt = user.updatedAt.getTime();
 
       // Small delay to ensure time difference
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       user.updateName('Updated Name');
 
-      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt);
+      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(
+        originalUpdatedAt,
+      );
     });
   });
 
@@ -295,12 +297,14 @@ describe('User Entity', () => {
       const originalUpdatedAt = user.updatedAt.getTime();
 
       // Small delay to ensure time difference
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       const newEmail = Email.create('newemail@example.com');
       user.updateEmail(newEmail);
 
-      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt);
+      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(
+        originalUpdatedAt,
+      );
     });
   });
 
@@ -338,7 +342,9 @@ describe('User Entity', () => {
         password: validPassword,
       });
 
-      expect(() => user.updatePassword(undefined as any)).toThrow(DomainException);
+      expect(() => user.updatePassword(undefined as any)).toThrow(
+        DomainException,
+      );
       expect(() => user.updatePassword(undefined as any)).toThrow(
         'Password cannot be empty',
       );
@@ -354,12 +360,14 @@ describe('User Entity', () => {
       const originalUpdatedAt = user.updatedAt.getTime();
 
       // Small delay to ensure time difference
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       const newPassword = await Password.create('newPassword123');
       user.updatePassword(newPassword);
 
-      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt);
+      expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(
+        originalUpdatedAt,
+      );
     });
   });
 

@@ -10,7 +10,11 @@ export class UserId {
 
   static create(value?: string): UserId {
     if (value && !UuidGenerator.isValid(value)) {
-      throw new InvalidValueObjectException('UserId', value, 'Must be a valid UUID');
+      throw new InvalidValueObjectException(
+        'UserId',
+        value,
+        'Must be a valid UUID',
+      );
     }
     return new UserId(value || UuidGenerator.generate());
   }

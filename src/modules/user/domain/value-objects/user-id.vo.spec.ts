@@ -53,7 +53,9 @@ describe('UserId Value Object', () => {
         expect(() => UserId.create(invalidUuid)).toThrow(
           InvalidValueObjectException,
         );
-        expect(() => UserId.create(invalidUuid)).toThrow('Must be a valid UUID');
+        expect(() => UserId.create(invalidUuid)).toThrow(
+          'Must be a valid UUID',
+        );
       });
     });
 

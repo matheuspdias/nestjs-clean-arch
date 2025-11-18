@@ -198,7 +198,9 @@ describe('TypeOrmUserRepository (Integration)', () => {
 
       await repository.save(user);
 
-      const found = await repository.findByEmail(Email.create('JOHN@EXAMPLE.COM'));
+      const found = await repository.findByEmail(
+        Email.create('JOHN@EXAMPLE.COM'),
+      );
 
       expect(found).toBeDefined();
       expect(found.email.getValue()).toBe('john@example.com');
@@ -359,9 +361,7 @@ describe('TypeOrmUserRepository (Integration)', () => {
     });
 
     it('should not throw error when deleting non-existent user', async () => {
-      await expect(
-        repository.delete('non-existent-id'),
-      ).resolves.not.toThrow();
+      await expect(repository.delete('non-existent-id')).resolves.not.toThrow();
     });
   });
 

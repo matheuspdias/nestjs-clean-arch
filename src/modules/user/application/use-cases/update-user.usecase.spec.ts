@@ -305,14 +305,16 @@ describe('UpdateUserUseCase', () => {
       const originalUpdatedAt = mockUser.updatedAt.getTime();
 
       // Small delay to ensure time difference
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       await useCase.execute({
         userId,
         data: updateDto,
       });
 
-      expect(mockUser.updatedAt.getTime()).toBeGreaterThanOrEqual(originalUpdatedAt);
+      expect(mockUser.updatedAt.getTime()).toBeGreaterThanOrEqual(
+        originalUpdatedAt,
+      );
     });
   });
 });

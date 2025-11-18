@@ -33,7 +33,10 @@ export class TypeOrmUserRepository implements IUserRepository {
     return model ? this.toDomain(model) : null;
   }
 
-  async findAll(page: number, limit: number): Promise<{ users: User[]; total: number }> {
+  async findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ users: User[]; total: number }> {
     const skip = (page - 1) * limit;
 
     const [models, total] = await this.repository.findAndCount({

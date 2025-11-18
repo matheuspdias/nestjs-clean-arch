@@ -15,12 +15,20 @@ export class Email {
 
   private validate(value: string): void {
     if (!value || value.length === 0) {
-      throw new InvalidValueObjectException('Email', value, 'Email cannot be empty');
+      throw new InvalidValueObjectException(
+        'Email',
+        value,
+        'Email cannot be empty',
+      );
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(value)) {
-      throw new InvalidValueObjectException('Email', value, 'Invalid email format');
+      throw new InvalidValueObjectException(
+        'Email',
+        value,
+        'Invalid email format',
+      );
     }
 
     if (value.length > 255) {

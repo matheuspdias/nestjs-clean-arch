@@ -176,7 +176,8 @@ describe('Password Value Object', () => {
     });
 
     it('should return the same hash when created from hash', () => {
-      const originalHash = '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
+      const originalHash =
+        '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy';
       const password = Password.fromHash(originalHash);
 
       expect(password.getValue()).toBe(originalHash);

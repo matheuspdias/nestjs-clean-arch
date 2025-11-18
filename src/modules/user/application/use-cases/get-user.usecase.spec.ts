@@ -37,7 +37,9 @@ describe('GetUserUseCase', () => {
     it('should return user when found', async () => {
       mockUserRepository.findById.mockResolvedValue(mockUser);
 
-      const result = await useCase.execute('550e8400-e29b-41d4-a716-446655440000');
+      const result = await useCase.execute(
+        '550e8400-e29b-41d4-a716-446655440000',
+      );
 
       expect(result).toBeDefined();
       expect(result.id).toBe('550e8400-e29b-41d4-a716-446655440000');
@@ -50,7 +52,9 @@ describe('GetUserUseCase', () => {
     it('should not include password in response', async () => {
       mockUserRepository.findById.mockResolvedValue(mockUser);
 
-      const result = await useCase.execute('550e8400-e29b-41d4-a716-446655440000');
+      const result = await useCase.execute(
+        '550e8400-e29b-41d4-a716-446655440000',
+      );
 
       expect(result).not.toHaveProperty('password');
     });
@@ -75,7 +79,9 @@ describe('GetUserUseCase', () => {
 
       await expect(
         useCase.execute('550e8400-e29b-41d4-a716-446655440000'),
-      ).rejects.toThrow('User with id 550e8400-e29b-41d4-a716-446655440000 not found');
+      ).rejects.toThrow(
+        'User with id 550e8400-e29b-41d4-a716-446655440000 not found',
+      );
     });
 
     it('should throw EntityNotFoundException with correct message', async () => {
@@ -117,7 +123,9 @@ describe('GetUserUseCase', () => {
 
       mockUserRepository.findById.mockResolvedValue(userWithDates);
 
-      const result = await useCase.execute('550e8400-e29b-41d4-a716-446655440000');
+      const result = await useCase.execute(
+        '550e8400-e29b-41d4-a716-446655440000',
+      );
 
       expect(result.id).toBe('550e8400-e29b-41d4-a716-446655440000');
       expect(result.name).toBe('John Doe');

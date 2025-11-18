@@ -27,7 +27,9 @@ async function bootstrap() {
   // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('NestJS Clean Architecture API')
-    .setDescription('User CRUD API following Clean Architecture and DDD principles')
+    .setDescription(
+      'User CRUD API following Clean Architecture and DDD principles',
+    )
     .setVersion('1.0')
     .addTag('Users')
     .build();
