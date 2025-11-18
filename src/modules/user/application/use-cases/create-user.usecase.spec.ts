@@ -94,7 +94,7 @@ describe('CreateUserUseCase', () => {
 
       mockUserRepository.existsByEmail.mockResolvedValue(false);
 
-      let savedUser: User;
+      let savedUser: User | null = null;
       mockUserRepository.save.mockImplementation(async (user: User) => {
         savedUser = user;
         return user;
@@ -103,9 +103,9 @@ describe('CreateUserUseCase', () => {
       await useCase.execute(dto);
 
       expect(savedUser).toBeDefined();
-      expect(savedUser.password.getValue()).not.toBe('plainPassword123');
+      expect(savedUser!.password.getValue()).not.toBe('plainPassword123');
       // Should be bcrypt hash
-      expect(savedUser.password.getValue()).toMatch(/^\$2[aby]\$.{56}$/);
+      expect(savedUser!.password.getValue()).toMatch(/^\$2[aby]\$.{56}$/);
     });
 
     it('should convert email to lowercase', async () => {
