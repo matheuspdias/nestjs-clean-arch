@@ -4,8 +4,9 @@ export class Email {
   private readonly value: string;
 
   private constructor(value: string) {
-    this.validate(value);
-    this.value = value.toLowerCase().trim();
+    const trimmedValue = value?.trim() || '';
+    this.validate(trimmedValue);
+    this.value = trimmedValue.toLowerCase();
   }
 
   static create(value: string): Email {
@@ -13,7 +14,7 @@ export class Email {
   }
 
   private validate(value: string): void {
-    if (!value || value.trim().length === 0) {
+    if (!value || value.length === 0) {
       throw new InvalidValueObjectException('Email', value, 'Email cannot be empty');
     }
 

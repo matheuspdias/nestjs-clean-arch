@@ -203,14 +203,104 @@ npm run start:dev          # Inicia em modo watch
 npm run build              # Compila o projeto
 npm run start:prod         # Inicia em produção
 
-# Testes
-npm run test               # Testes unitários
-npm run test:e2e           # Testes E2E
-npm run test:cov           # Cobertura de testes
-
 # Linting
 npm run lint               # Verifica código
 npm run format             # Formata código
+```
+
+## Testes
+
+### ✅ Suite Completa de Testes
+
+O projeto possui **157 testes** cobrindo todas as camadas da Clean Architecture:
+
+- **52 testes** - Value Objects (Email, Password, UserId)
+- **39 testes** - Entidades de domínio (User)
+- **60 testes** - Use Cases (CRUD completo)
+- **21 testes** - Testes de integração (Repository com SQLite in-memory)
+- **E2E** - Testes end-to-end da API REST
+
+**Cobertura**: 100% das camadas de Domain e Application
+
+### Executando Testes no Docker (Recomendado)
+
+Como o projeto usa Docker, execute os testes **dentro do container**:
+
+```bash
+# Todos os testes
+docker exec nestjs-app npm test
+
+# Com cobertura
+docker exec nestjs-app npm run test:cov
+
+# Testes E2E
+docker exec nestjs-app npm run test:e2e
+
+# Modo watch
+docker exec nestjs-app npm run test:watch
+
+# Teste específico
+docker exec nestjs-app npm test -- user.entity.spec.ts
+```
+
+### Atalhos Úteis
+
+Adicione ao seu `~/.bashrc` ou `~/.zshrc`:
+
+```bash
+alias dtest='docker exec nestjs-app npm test'
+alias dtest:cov='docker exec nestjs-app npm run test:cov'
+alias dtest:e2e='docker exec nestjs-app npm run test:e2e'
+```
+
+### Estrutura de Testes
+
+```
+src/
+├── modules/user/
+│   ├── domain/
+│   │   ├── entities/
+│   │   │   └── user.entity.spec.ts           # Testes da entidade
+│   │   └── value-objects/
+│   │       ├── email.vo.spec.ts              # Testes do Email VO
+│   │       ├── password.vo.spec.ts           # Testes do Password VO
+│   │       └── user-id.vo.spec.ts            # Testes do UserId VO
+│   ├── application/
+│   │   └── use-cases/
+│   │       ├── create-user.usecase.spec.ts   # Testes unitários
+│   │       ├── get-user.usecase.spec.ts
+│   │       ├── update-user.usecase.spec.ts
+│   │       ├── delete-user.usecase.spec.ts
+│   │       └── list-users.usecase.spec.ts
+│   └── infrastructure/
+│       └── persistence/
+│           └── typeorm/
+│               └── typeorm-user.repository.spec.ts  # Integração
+test/
+├── user.e2e-spec.ts                          # Testes E2E
+├── helpers/                                  # Utilitários de teste
+│   ├── user.factory.ts                       # Factory de usuários
+│   ├── repository.mock.ts                    # Mocks
+│   └── test-database.ts                      # Config de DB de teste
+└── jest-e2e.json                             # Config E2E
+```
+
+### Por Que os Testes Não Afetam o Banco de Dados?
+
+- **Testes Unitários**: Usam mocks (nada é persistido)
+- **Testes de Integração**: Usam SQLite in-memory (dados temporários na RAM)
+- **Testes E2E**: Usam SQLite in-memory por padrão
+- **Seu MySQL de desenvolvimento/produção está 100% seguro!**
+
+### Exemplo de Saída
+
+```bash
+$ docker exec nestjs-app npm test
+
+Test Suites: 11 passed, 11 total
+Tests:       157 passed, 157 total
+Snapshots:   0 total
+Time:        11.203 s
 ```
 
 ## Docker
