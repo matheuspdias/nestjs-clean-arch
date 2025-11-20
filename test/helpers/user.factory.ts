@@ -10,14 +10,16 @@ export class UserFactory {
   /**
    * Creates a User with default or custom values
    */
-  static async create(overrides: {
-    id?: string;
-    name?: string;
-    email?: string;
-    password?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-  } = {}): Promise<User> {
+  static async create(
+    overrides: {
+      id?: string;
+      name?: string;
+      email?: string;
+      password?: string;
+      createdAt?: Date;
+      updatedAt?: Date;
+    } = {},
+  ): Promise<User> {
     const defaults = {
       name: 'Test User',
       email: 'test@example.com',
@@ -37,14 +39,16 @@ export class UserFactory {
   /**
    * Creates a User from database state (reconstitute)
    */
-  static async reconstitute(overrides: {
-    id?: string;
-    name?: string;
-    email?: string;
-    password?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-  } = {}): Promise<User> {
+  static async reconstitute(
+    overrides: {
+      id?: string;
+      name?: string;
+      email?: string;
+      password?: string;
+      createdAt?: Date;
+      updatedAt?: Date;
+    } = {},
+  ): Promise<User> {
     const defaults = {
       id: '550e8400-e29b-41d4-a716-446655440000',
       name: 'Test User',
@@ -99,8 +103,7 @@ export class UserFactory {
   ): Promise<User> {
     const invalidData = {
       name: invalidField === 'name' ? 'AB' : 'Valid Name',
-      email:
-        invalidField === 'email' ? 'invalid-email' : 'valid@example.com',
+      email: invalidField === 'email' ? 'invalid-email' : 'valid@example.com',
       password: invalidField === 'password' ? '12345' : 'validPassword',
     };
 

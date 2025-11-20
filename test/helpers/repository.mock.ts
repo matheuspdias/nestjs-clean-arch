@@ -1,4 +1,6 @@
 import { IUserRepository } from '../../src/modules/user/domain/repositories/user.repository';
+import { User } from '../../src/modules/user/domain/entities/user.entity';
+import { Email } from '../../src/modules/user/domain/value-objects/email.vo';
 
 /**
  * Creates a mock implementation of IUserRepository
@@ -19,63 +21,68 @@ export function createMockUserRepository(): jest.Mocked<IUserRepository> {
  * Repository mock with default implementations
  */
 export class MockUserRepository {
-  private users: Map<string, any> = new Map();
+  private users: Map<string, User> = new Map();
 
-  async save(user: any): Promise<any> {
+  save(user: User): Promise<User> {
     this.users.set(user.id, user);
-    return user;
+    return Promise.resolve(user);
   }
 
-  async findById(id: string): Promise<any | null> {
-    return this.users.get(id) || null;
+  findById(id: string): Promise<User | null> {
+    const user = this.users.get(id);
+    return Promise.resolve(user || null);
   }
 
-  async findByEmail(email: any): Promise<any | null> {
+  findByEmail(email: Email): Promise<User | null> {
     const emailValue = email.getValue();
     for (const user of this.users.values()) {
       if (user.email.getValue() === emailValue) {
-        return user;
+        return Promise.resolve(user);
       }
     }
-    return null;
+    return Promise.resolve(null);
   }
 
-  async findAll(page: number, limit: number): Promise<{ users: any[]; total: number }> {
+  findAll(
+    page: number,
+    limit: number,
+  ): Promise<{ users: User[]; total: number }> {
     const allUsers = Array.from(this.users.values());
     const start = (page - 1) * limit;
     const end = start + limit;
     const paginatedUsers = allUsers.slice(start, end);
 
-    return {
+    return Promise.resolve({
       users: paginatedUsers,
       total: allUsers.length,
-    };
+    });
   }
 
-  async update(user: any): Promise<any> {
+  update(user: User): Promise<User> {
     this.users.set(user.id, user);
-    return user;
+    return Promise.resolve(user);
   }
 
-  async delete(id: string): Promise<void> {
+  delete(id: string): Promise<void> {
     this.users.delete(id);
+    return Promise.resolve();
   }
 
-  async existsByEmail(email: any): Promise<boolean> {
+  existsByEmail(email: Email): Promise<boolean> {
     const emailValue = email.getValue();
     for (const user of this.users.values()) {
       if (user.email.getValue() === emailValue) {
-        return true;
+        return Promise.resolve(true);
       }
     }
-    return false;
+    return Promise.resolve(false);
   }
 
   clear(): void {
     this.users.clear();
   }
 
-  getAll(): any[] {
+  getAll(): User[] {
     return Array.from(this.users.values());
   }
 }

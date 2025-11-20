@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,10 +14,7 @@ describe('UserController (E2E)', () => {
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot(createTestDatabaseConfig()),
-        AppModule,
-      ],
+      imports: [TypeOrmModule.forRoot(createTestDatabaseConfig()), AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -397,7 +397,9 @@ describe('UserController (E2E)', () => {
 
       const afterUpdatedAt = new Date(afterUpdate.body.updatedAt);
 
-      expect(afterUpdatedAt.getTime()).toBeGreaterThan(beforeUpdatedAt.getTime());
+      expect(afterUpdatedAt.getTime()).toBeGreaterThan(
+        beforeUpdatedAt.getTime(),
+      );
     });
   });
 
@@ -494,9 +496,7 @@ describe('UserController (E2E)', () => {
         });
 
       // Delete
-      await request(app.getHttpServer())
-        .delete(`/users/${userId}`)
-        .expect(200);
+      await request(app.getHttpServer()).delete(`/users/${userId}`).expect(200);
 
       // Verify deletion
       await request(app.getHttpServer()).get(`/users/${userId}`).expect(404);

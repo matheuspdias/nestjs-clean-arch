@@ -5,6 +5,10 @@ import type { IUserRepository } from '../../../user/domain/repositories/user.rep
 import { USER_REPOSITORY } from '../../../user/domain/repositories/user.repository';
 import { Email } from '../../../user/domain/value-objects/email.vo';
 
+interface JwtPayload {
+  sub: string;
+}
+
 @Injectable()
 export class JwtAuthService implements IAuthService {
   constructor(
@@ -55,7 +59,7 @@ export class JwtAuthService implements IAuthService {
 
   async validateToken(token: string): Promise<{ userId: string } | null> {
     try {
-      const payload = await this.jwtService.verifyAsync(token);
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token);
       return { userId: payload.sub };
     } catch {
       return null;
@@ -66,7 +70,7 @@ export class JwtAuthService implements IAuthService {
     accessToken: string;
     expiresIn: number;
   }> {
-    const payload = await this.jwtService.verifyAsync(refreshToken);
+    const payload = await this.jwtService.verifyAsync<JwtPayload>(refreshToken);
 
     const accessToken = await this.jwtService.signAsync(
       { sub: payload.sub },

@@ -44,4 +44,5 @@ async function bootstrap() {
   console.log(`API Base URL: http://localhost:${port}/api`);
   console.log(`Swagger documentation: http://localhost:${port}/api/docs`);
 }
-bootstrap();
+
+void bootstrap();

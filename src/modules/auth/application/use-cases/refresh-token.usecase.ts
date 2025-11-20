@@ -29,7 +29,7 @@ export class RefreshTokenUseCase
         ...tokens,
         tokenType: 'Bearer',
       };
-    } catch (error) {
+    } catch {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
