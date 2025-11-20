@@ -35,11 +35,13 @@ src/
 ### Camadas
 
 #### 1. Domain (Domínio)
+
 - **Entidades**: `User` - Lógica de negócio pura
 - **Value Objects**: `Email`, `UserId` - Validações e encapsulamento
 - **Repository Interface**: Contrato para persistência
 
 #### 2. Application (Aplicação)
+
 - **Use Cases**: Casos de uso isolados e testáveis
   - `CreateUserUseCase`
   - `GetUserUseCase`
@@ -49,21 +51,25 @@ src/
 - **DTOs**: Validação de entrada/saída
 
 #### 3. Infrastructure (Infraestrutura)
+
 - **TypeORM Models**: Mapeamento para o banco de dados
 - **Repositories**: Implementação concreta da interface
 
 #### 4. Presentation (Apresentação)
+
 - **Controllers**: Endpoints REST
 - **Swagger**: Documentação automática
 
 ## Princípios Aplicados
 
 ### Clean Architecture
+
 - Separação clara de responsabilidades
 - Dependências apontam para dentro (Domain não conhece Infrastructure)
 - Inversão de dependência via interfaces
 
 ### DDD (Domain-Driven Design)
+
 - **Entidades**: Identidade e ciclo de vida
 - **Value Objects**: Imutabilidade e validação
 - **Aggregates**: User como raiz do agregado
@@ -71,6 +77,7 @@ src/
 - **Domain Services**: Lógica de negócio complexa
 
 ### SOLID
+
 - **SRP**: Cada classe tem uma responsabilidade única
 - **OCP**: Aberto para extensão, fechado para modificação
 - **LSP**: Substituição de implementações
@@ -80,11 +87,13 @@ src/
 ## API Endpoints
 
 ### Base URL
+
 ```
 http://localhost:3000
 ```
 
 ### Swagger
+
 ```
 http://localhost:3000/api/docs
 ```
@@ -92,6 +101,7 @@ http://localhost:3000/api/docs
 ### Endpoints
 
 #### 1. Criar Usuário
+
 ```http
 POST /users
 Content-Type: application/json
@@ -104,16 +114,19 @@ Content-Type: application/json
 ```
 
 #### 2. Listar Usuários (Paginado)
+
 ```http
 GET /users?page=1&limit=10
 ```
 
 #### 3. Buscar Usuário por ID
+
 ```http
 GET /users/{id}
 ```
 
 #### 4. Atualizar Usuário
+
 ```http
 PUT /users/{id}
 Content-Type: application/json
@@ -125,6 +138,7 @@ Content-Type: application/json
 ```
 
 #### 5. Deletar Usuário
+
 ```http
 DELETE /users/{id}
 ```
@@ -132,16 +146,19 @@ DELETE /users/{id}
 ## Validações Implementadas
 
 ### Email (Value Object)
+
 - Formato válido de e-mail
 - Não pode estar vazio
 - Máximo 255 caracteres
 - Convertido para lowercase
 
 ### UserId (Value Object)
+
 - UUID válido
 - Gerado automaticamente se não fornecido
 
 ### User Entity
+
 - Nome: mínimo 3 caracteres, máximo 100
 - Senha: mínimo 6 caracteres
 - Email único no sistema
@@ -149,6 +166,7 @@ DELETE /users/{id}
 ## Como Executar
 
 ### Com Docker (Recomendado)
+
 ```bash
 # Copiar variáveis de ambiente
 cp .env.example .env
@@ -162,6 +180,7 @@ http://localhost/api/docs (Swagger)
 ```
 
 ### Localmente
+
 ```bash
 # Instalar dependências
 npm install
@@ -183,6 +202,7 @@ npm run start:prod
 ## Testes
 
 ### Estrutura de Testes (Exemplos)
+
 ```typescript
 // Domain Layer
 describe('User Entity', () => {
@@ -196,19 +216,6 @@ describe('CreateUserUseCase', () => {
   it('should throw error if email already exists', () => {});
 });
 ```
-
-## Melhorias Futuras
-
-- [ ] Hash de senhas (bcrypt)
-- [ ] Autenticação JWT
-- [ ] Paginação com cursor
-- [ ] Eventos de domínio
-- [ ] Cache com Redis
-- [ ] Logs estruturados
-- [ ] Testes unitários e E2E
-- [ ] CI/CD pipeline
-- [ ] Rate limiting
-- [ ] API versioning
 
 ## Tecnologias
 
