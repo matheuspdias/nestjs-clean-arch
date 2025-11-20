@@ -10,7 +10,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import {
   ApiCreateOperation,
   ApiGetOperation,
@@ -32,6 +32,7 @@ import { ListUsersUseCase } from '../../application/use-cases/list-users.usecase
 import { UpdateUserUseCase } from '../../application/use-cases/update-user.usecase';
 
 @ApiTags('Users')
+@ApiBearerAuth('JWT-auth')
 @Controller('users')
 export class UserController {
   constructor(
